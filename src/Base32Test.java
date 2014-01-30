@@ -1,7 +1,7 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+#import test
 public class Base32Test {
     public static String base32Decode(String value)
     {
