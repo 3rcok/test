@@ -1,0 +1,65 @@
+//We can implement an unbounded fair blocking queue using an unbounded queue like ConcurrentLinked queue and a fair Semaphore. The class below doesn't implement all methods from the BlockingQueue interface but just a few of them for demonstration purposes. The main() method is written as a test only.
+
+    public class FairBlockingQueue<T> {
+    
+        private final Queue<T> queue;
+        private final Semaphore takeSemaphore;
+    
+        public FairBlockingQueue() {
+            queue = new ConcurrentLinkedQueue<T>();
+            takeSemaphore = new Semaphore(0, true);
+        }
+    
+        public FairBlockingQueue(Collection<T> c) {
+            queue = new ConcurrentLinkedQueue<T>(c);
+            takeSemaphore = new Semaphore(c.size(), true);
+        }
+    
+        public T poll() {
+            if (!takeSemaphore.tryAcquire()) {
+                return null;
+            }
+            return queue.poll();
+        }
+    
+        public T poll(long millis) throws InterruptedException {
+            if (!takeSemaphore.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
+                return null;
+            }
+            return queue.poll();
+        }
+    
+        public T take() throws InterruptedException {
+            takeSemaphore.acquire();
+            return queue.poll();
+        }
+    
+        public void add(T t) {
+            queue.add(t);
+            takeSemaphore.release();
+        }
+    
+        public static void main(String[] args) throws Exception {
+            FairBlockingQueue<Object> q = new FairBlockingQueue<Object>();
+            Object o = q.poll();
+            assert o == null;
+            o = q.poll(1000);
+            assert o == null;
+    
+            q.add(new Object());
+            q.add(new Object());
+            q.add(new Object());
+    
+            o = q.take();
+            assert o != null;
+            o = q.poll();
+            assert o != null;
+            o = q.poll(1000);
+            assert o != null;
+    
+            o = q.poll();
+            assert o == null;
+        }
+    }
+
+

@@ -1,7 +1,6 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-#import test
 public class Base32Test {
     public static String base32Decode(String value)
     {
@@ -229,6 +228,20 @@ public class Base32Test {
 		}
 		return callerID;
 	}
+	public static String getTime(String messageID){
+		
+		Pattern PATTERN_CALLER = Pattern.compile("(\\d*)-(?:[+]?\\w*)-(?:[+]?\\d*)-(?:\\w*)_(?:\\w)");
+		Matcher matcher_caller = PATTERN_CALLER.matcher(messageID);
+		String callerID = "";
+		if (matcher_caller.matches()){
+			callerID = matcher_caller.group(1);
+			System.out.println("Lei: callerID " + callerID);
+			return callerID;
+		}
+		return callerID;
+	}
+	
+	
 	
 	
 	/**
@@ -238,13 +251,16 @@ public class Base32Test {
 		// TODO Auto-generated method stub
 //		String b = getCallerID("20131016005147717-590-1001-null_I");
 		
-		String b = getCallerID("20131017213505185-14084775221-1028-UNKNOWN_E");
-//		String b = getCallerID("20131017213505185-14084775221-1028-3QZYFUA3NG7I4_E");
+//		String b = getCallerID("20131017213505185-14084775221-1028-UNKNOWN_E");
+
+		String b = getCallerID("20131017213505185-14084775221-1028-3QZYFUA3NG7I4_E");
+		String time = getTime("20131017213505185-14084775221-1028-3QZYFUA3NG7I4_E");
 		if(b == null) {
 		System.out.println("b " + b);
 		}
 		else {
 			System.out.println("b " + b);
+			System.out.println("time " + time);
 			
 		}
 		
