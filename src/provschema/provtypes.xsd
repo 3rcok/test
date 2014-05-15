@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="ExtensionInfoListType" type="ExtensionInfoListType"/>
+    <xs:complexType name="ExtensionInfoListType">
+        <xs:sequence>
+        <xs:element name="MasterExtensionInfoList" type="MasterExtensionInfoListType" minOccurs="1"/>
+        <xs:element name="SlaveExtensionInfoList" type="SlaveExtensionInfoListType" minOccurs="1"/>
+
+        </xs:sequence>
+
+    </xs:complexType>
+    
+  <xs:element name="MasterExtensionInfoList" type="MasterExtensionInfoListType"/>
+    <xs:complexType name="MasterExtensionInfoListType">
+        <xs:sequence>
+        <xs:element name="MasterExtensionInfo" type="MasterExtensionInfoType" minOccurs="0" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+
+    </xs:complexType>
+
+  <xs:element name="SlaveExtensionInfoList" type="SlaveExtensionInfoListType"/>
+    <xs:complexType name="SlaveExtensionInfoListType">
+        <xs:sequence>
+        <xs:element name="SlaveExtensionInfo" type="SlaveExtensionInfoType" minOccurs="0" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+
+    </xs:complexType>        
+    
+    <xs:complexType name="ExtensionInfoType">
+        <xs:sequence>
+        <xs:element name="master" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="online" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="publicIpAddress" type="xs:string" minOccurs="0"/>
+        <xs:element name="deviceModel" type="xs:string" minOccurs="0"/>
+        <xs:element name="macAddress" type="xs:string" minOccurs="0"/>
+        <xs:element name="publicPort" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+
+        <xs:attribute name="extension" type="xs:string" use="required"/>
+        <xs:attribute name="pbx" type="xs:string" use="required"/>
+        <xs:attribute name="branch" type="xs:string"/>
+        
+        
+    </xs:complexType>
+  <xs:element name="SlaveExtensionInfo" type="SlaveExtensionInfoType"/>
+
+<xs:complexType name="SlaveExtensionInfoType">
+  <xs:complexContent>
+    <xs:extension base="ExtensionInfoType">
+        <xs:sequence>
+            <xs:element name="masterExt" type="xs:string" minOccurs="0"/>
+        </xs:sequence>  
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>   
+
+  <xs:element name="MasterExtensionInfo" type="MasterExtensionInfoType"/>
+ 
+ <xs:complexType name="MasterExtensionInfoType">
+  <xs:complexContent>
+    <xs:extension base="ExtensionInfoType">
+            <xs:sequence>
+            <xs:element name="slaveMembers" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>    
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>    
+</xs:schema>
